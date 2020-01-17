@@ -21,7 +21,34 @@ architecture rtl of top is
 
   signal digit : integer;
 
+  -- For timing the 7-seg counting
+  constant clk_hz : integer := 12e6;
+  constant tick_counter_max : integer := clk_hz - 1;
+  signal tick_counter : integer range 0 to tick_counter_max;
+  signal tick : std_logic;
+
 begin
+
+  TICK_PROC : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        tick_counter <= 0;
+        tick <= '0';
+
+      else
+
+        if tick_counter = tick_counter_max then
+          tick_counter <= 0;
+          tick <= '1';
+        else
+          tick_counter <= tick_counter + 1;
+          tick <= '0';
+        end if;
+
+      end if;
+    end if;
+  end process;
 
   SHIFT_REG_PROC : process(clk)
   begin
