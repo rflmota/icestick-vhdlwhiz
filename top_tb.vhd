@@ -37,7 +37,7 @@ begin
   RESET_PROC : process
   begin
 
-    for count in 1 to 5 loop
+    for count in 1 to 10 loop
       wait until clk = '1';
     end loop;
 

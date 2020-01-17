@@ -13,9 +13,18 @@ end top;
 
 architecture rtl of top is
 
+  signal shift_reg : std_logic_vector(7 downto 0);
+
   signal digit : integer;
 
 begin
+
+  SHIFT_REG_PROC : process(clk)
+  begin
+    if rising_edge(clk) then
+      shift_reg <= shift_reg(6 downto 0) & rst_n;
+    end if;
+  end process;
 
   digit <= 7;
 
