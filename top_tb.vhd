@@ -11,7 +11,7 @@ architecture sim of top_tb is
   constant clk_period : time := 1 sec / clk_hz;
 
   signal clk : std_logic := '1';
-  signal rst_n : std_logic;
+  signal rst_n : std_logic := '0';
   signal segments : std_logic_vector(6 downto 0);
   signal digit_sel : std_logic;
 
@@ -32,6 +32,21 @@ begin
     wait for clk_period / 2;
     clk <= not clk;
 
+  end process;
+
+  RESET_PROC : process
+  begin
+
+    wait for 10 ns;
+    rst_n <= '1';
+    wait;
+
+  end process;
+
+  TEMP_PROC : process
+  begin
+    rst_n <= '0';
+    wait;
   end process;
 
 end architecture;
