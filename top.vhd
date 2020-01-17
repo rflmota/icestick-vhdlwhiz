@@ -17,7 +17,7 @@ architecture rtl of top is
 
 begin
 
-  digit <= 0;
+  digit <= 1;
 
   ENCODER_PROC : process(digit)
 
@@ -31,19 +31,19 @@ begin
     constant G : integer := 6;
 
   begin
+    segments <= "1111111";
+
     case digit is
 
       when 0 =>
-        segments(A) <= '1';
-        segments(B) <= '1';
-        segments(C) <= '1';
-        segments(D) <= '1';
-        segments(E) <= '1';
-        segments(F) <= '1';
         segments(G) <= '0';
 
+      when 1 =>
+        segments <= "0000000";
+        segments(B) <= '1';
+        segments(C) <= '1';
+
       when 8 =>
-        segments <= "1111111";
 
       when others =>
         segments <= "0000000";
