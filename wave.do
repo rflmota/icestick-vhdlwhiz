@@ -5,8 +5,9 @@ add wave -noupdate /top_tb/digit_sel
 add wave -noupdate /top_tb/rst_n
 add wave -noupdate /top_tb/segments
 add wave -noupdate -expand /top_tb/DUT/shift_reg
+add wave -noupdate /top_tb/DUT/rst
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1533 ns} 0}
+WaveRestoreCursors {{Cursor 1} {1624 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100

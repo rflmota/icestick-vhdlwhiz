@@ -13,6 +13,10 @@ end top;
 
 architecture rtl of top is
 
+  -- Internal reset
+  signal rst : std_logic;
+
+  -- Shift register for generating the internal reset
   signal shift_reg : std_logic_vector(7 downto 0);
 
   signal digit : integer;
@@ -23,6 +27,15 @@ begin
   begin
     if rising_edge(clk) then
       shift_reg <= shift_reg(6 downto 0) & rst_n;
+    end if;
+  end process;
+
+  RESET_PROC : process(shift_reg)
+  begin
+    if shift_reg = "11111111" then
+      rst <= '0';
+    else
+      rst <= '1';
     end if;
   end process;
 
