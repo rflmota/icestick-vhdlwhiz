@@ -42,6 +42,15 @@ architecture rtl of top is
   type bcd_state_type is (COUNT_ONES, COUNT_TENS);
   signal bcd_state : bcd_state_type;
 
+  procedure incr_wrap(signal d : inout digit_type) is
+  begin
+    if d = 9 then
+      d <= 0;
+    else
+      d <= d + 1;
+    end if;
+  end procedure;
+
 begin
 
   BCD_FSM_PROC : process(clk)
@@ -54,11 +63,7 @@ begin
       else
 
         if tick = '1' then
-          if digits(0) = 9 then
-            digits(0) <= 0;
-          else
-            digits(0) <= digits(0) + 1;
-          end if;
+          incr_wrap(digits(0));
         end if;
 
         case bcd_state is
@@ -71,11 +76,7 @@ begin
           when COUNT_TENS =>
 
             if tick = '1' then
-              if digits(1) = 9 then
-                digits(1) <= 0;
-              else
-                digits(1) <= digits(1) + 1;
-              end if;
+              incr_wrap(digits(1));
 
               bcd_state <= COUNT_ONES;
             end if;
