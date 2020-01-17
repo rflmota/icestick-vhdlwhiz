@@ -23,6 +23,7 @@ architecture rtl of top is
   -- Shift register for generating the internal reset
   signal shift_reg : std_logic_vector(7 downto 0);
 
+  -- Binary-coded decimal
   subtype digit_type is integer range 0 to 9;
   signal digit : digit_type;
   type digits_type is array (0 to 1) of digit_type;
@@ -33,12 +34,11 @@ architecture rtl of top is
   signal tick_counter : integer range 0 to tick_counter_max;
   signal tick : std_logic;
 
-  -- 12e6 MHz / (2 ** 16) / 2 = 91.5 Hz refresh rate
+  -- Counter for alternating between ones and tens on the display
+  -- 12e6 MHz / (2 ** 16) = 183.1 Hz refresh rate
   signal alt_counter : unsigned(alt_counter_len - 1 downto 0);
 
 begin
-
-  digit <= digits(0);
 
   BCD_FSM_PROC : process(clk)
   begin
@@ -70,6 +70,17 @@ begin
         alt_counter <= alt_counter + 1;
 
       end if;
+    end if;
+  end process;
+
+  OUTPUT_MUX_PROC : process(alt_counter)
+  begin
+    if alt_counter(alt_counter'high) = '1' then
+      digit <= digits(1);
+      digit_sel <= '1';
+    else
+      digit <= digits(0);
+      digit_sel <= '0';
     end if;
   end process;
 
