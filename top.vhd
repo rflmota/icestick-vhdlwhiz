@@ -17,11 +17,30 @@ architecture rtl of top is
 
 begin
 
-  digit <= 7;
+  digit <= 0;
 
   ENCODER_PROC : process(digit)
+
+    -- Segments from the PmodSSD datasheet
+    constant A : integer := 0;
+    constant B : integer := 1;
+    constant C : integer := 2;
+    constant D : integer := 3;
+    constant E : integer := 4;
+    constant F : integer := 5;
+    constant G : integer := 6;
+
   begin
     case digit is
+
+      when 0 =>
+        segments(A) <= '1';
+        segments(B) <= '1';
+        segments(C) <= '1';
+        segments(D) <= '1';
+        segments(E) <= '1';
+        segments(F) <= '1';
+        segments(G) <= '0';
 
       when 8 =>
         segments <= "1111111";
