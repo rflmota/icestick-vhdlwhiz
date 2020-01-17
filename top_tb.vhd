@@ -11,8 +11,20 @@ architecture sim of top_tb is
   constant clk_period : time := 1 sec / clk_hz;
 
   signal clk : std_logic := '1';
+  signal rst_n : std_logic;
+  signal segments : std_logic_vector(6 downto 0);
+  signal digit_sel : std_logic;
 
 begin
+
+  -- Device under test
+  DUT : entity work.top(rtl)
+  port map (
+    clk => clk,
+    rst_n => rst_n,
+    segments => segments,
+    digit_sel => digit_sel
+  );
 
   CLOCK_PROC : process
   begin
