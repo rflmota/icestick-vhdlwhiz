@@ -3,6 +3,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity top is
+  generic (
+    clk_hz : integer := 12e6
+  );
   port (
     clk : in std_logic;
     rst_n : in std_logic;
@@ -22,7 +25,6 @@ architecture rtl of top is
   signal digit : integer;
 
   -- For timing the 7-seg counting
-  constant clk_hz : integer := 12e6;
   constant tick_counter_max : integer := clk_hz - 1;
   signal tick_counter : integer range 0 to tick_counter_max;
   signal tick : std_logic;

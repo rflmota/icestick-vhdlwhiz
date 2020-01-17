@@ -7,7 +7,7 @@ end top_tb;
 
 architecture sim of top_tb is
 
-  constant clk_hz : integer := 12e6;
+  constant clk_hz : integer := 100;
   constant clk_period : time := 1 sec / clk_hz;
 
   signal clk : std_logic := '1';
@@ -19,6 +19,9 @@ begin
 
   -- Device under test
   DUT : entity work.top(rtl)
+  generic map (
+    clk_hz => clk_hz
+  )
   port map (
     clk => clk,
     rst_n => rst_n,
