@@ -4,7 +4,8 @@ use ieee.numeric_std.all;
 
 entity top is
   generic (
-    clk_hz : integer := 12e6
+    clk_hz : integer := 12e6;
+    alt_counter_len : integer := 16
   );
   port (
     clk : in std_logic;
@@ -32,6 +33,9 @@ architecture rtl of top is
   signal tick_counter : integer range 0 to tick_counter_max;
   signal tick : std_logic;
 
+  -- 12e6 MHz / (2 ** 16) / 2 = 91.5 Hz refresh rate
+  signal alt_counter : unsigned(alt_counter_len - 1 downto 0);
+
 begin
 
   digit <= digits(0);
@@ -51,6 +55,19 @@ begin
             digits(0) <= digits(0) + 1;
           end if;
         end if;
+
+      end if;
+    end if;
+  end process;
+
+  ALTERNATE_COUNTER_PROC : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        alt_counter <= (others => '0');
+
+      else
+        alt_counter <= alt_counter + 1;
 
       end if;
     end if;

@@ -20,7 +20,8 @@ begin
   -- Device under test
   DUT : entity work.top(rtl)
   generic map (
-    clk_hz => clk_hz
+    clk_hz => clk_hz,
+    alt_counter_len => 2
   )
   port map (
     clk => clk,

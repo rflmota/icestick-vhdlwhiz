@@ -9,8 +9,9 @@ add wave -noupdate /top_tb/DUT/rst
 add wave -noupdate /top_tb/DUT/tick_counter
 add wave -noupdate /top_tb/DUT/tick
 add wave -noupdate /top_tb/DUT/digit
+add wave -noupdate -radix unsigned /top_tb/DUT/alt_counter
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {14672003745 ns} 0}
+WaveRestoreCursors {{Cursor 1} {2420000000 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 170
 configure wave -valuecolwidth 100
