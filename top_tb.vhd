@@ -15,6 +15,8 @@ architecture sim of top_tb is
   signal segments : std_logic_vector(6 downto 0);
   signal digit_sel : std_logic;
 
+  signal sig : integer := 0;
+
 begin
 
   -- Device under test
@@ -44,8 +46,23 @@ begin
   end process;
 
   TEMP_PROC : process
+    variable var : integer := 0;
   begin
-    rst_n <= '0';
+
+    var := 0;
+    sig <= 0;
+
+    wait for 10 ns;
+
+    var := var + 1;
+    sig <= sig + 1;
+
+    var := var + 1;
+    sig <= sig + 1;
+
+
+
+
     wait;
   end process;
 
