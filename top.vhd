@@ -22,7 +22,10 @@ architecture rtl of top is
   -- Shift register for generating the internal reset
   signal shift_reg : std_logic_vector(7 downto 0);
 
-  signal digit : integer range 0 to 9;
+  subtype digit_type is integer range 0 to 9;
+  signal digit : digit_type;
+  type digits_type is array (0 to 1) of digit_type;
+  signal digits : digits_type;
 
   -- For timing the 7-seg counting
   constant tick_counter_max : integer := clk_hz - 1;
@@ -31,19 +34,21 @@ architecture rtl of top is
 
 begin
 
+  digit <= digits(0);
+
   BCD_FSM_PROC : process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        digit <= 0;
+        digits <= (others => 0);
 
       else
 
         if tick = '1' then
-          if digit = 9 then
-            digit <= 0;
+          if digits(0) = 9 then
+            digits(0) <= 0;
           else
-            digit <= digit + 1;
+            digits(0) <= digits(0) + 1;
           end if;
         end if;
 
