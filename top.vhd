@@ -30,13 +30,17 @@ architecture rtl of top is
   signal digits : digits_type;
 
   -- For timing the 7-seg counting
-  constant tick_counter_max : integer := clk_hz - 1;
+  constant tick_counter_max : integer := clk_hz / 10 - 1;
   signal tick_counter : integer range 0 to tick_counter_max;
   signal tick : std_logic;
 
   -- Counter for alternating between ones and tens on the display
   -- 12e6 MHz / (2 ** 16) = 183.1 Hz refresh rate
   signal alt_counter : unsigned(alt_counter_len - 1 downto 0);
+
+  -- Finite-state machine (FSM)
+  type bcd_state_type is (COUNT_ONES, COUNT_TENS);
+  signal bcd_state : bcd_state_type;
 
 begin
 
@@ -45,6 +49,7 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         digits <= (others => 0);
+        bcd_state <= COUNT_ONES;
 
       else
 
@@ -55,6 +60,27 @@ begin
             digits(0) <= digits(0) + 1;
           end if;
         end if;
+
+        case bcd_state is
+
+          when COUNT_ONES =>
+            if digits(0) = 9 then
+              bcd_state <= COUNT_TENS;
+            end if;
+
+          when COUNT_TENS =>
+
+            if tick = '1' then
+              if digits(1) = 9 then
+                digits(1) <= 0;
+              else
+                digits(1) <= digits(1) + 1;
+              end if;
+
+              bcd_state <= COUNT_ONES;
+            end if;
+
+        end case;
 
       end if;
     end if;
